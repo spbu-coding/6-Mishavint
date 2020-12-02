@@ -39,7 +39,7 @@ int test_params(int const* number_of_params , char **argv , struct users_params 
 
 
     params_to_write->number_of_lines = (int)strtol(argv[ 1 ] , NULL , 10 ) ;
-    if( params_to_write->number_of_lines < 0 )
+    if( (int)params_to_write->number_of_lines < 0 )
     {
         fprintf( stderr , "You have entered less than 1 line" );
         return -1;
@@ -144,7 +144,7 @@ int parcing_params( char **argv ,  struct users_params *params_to_write )
 
 void free_array_of_lines( strings_array_t array , array_size_t const* number_of_lines )
 {
-    for( int i = 0 ; i < *number_of_lines ; i++ )
+    for( int i = 0 ; i < (int)*number_of_lines ; i++ )
     {
         free( array[i] );
     }
@@ -237,12 +237,12 @@ int main( int argc , char **argv )
      return -1;
     }
 
-    for( int i = 0 ; i < params.number_of_lines ; i++ )
+    for( int i = 0 ; i < (int)params.number_of_lines ; i++ )
     {
         printf("[%d] = %s\n" , i , array_of_lines[i]);
     }
 
-    for( int i = 0 ; i < params.number_of_lines ; i++ )
+    for( int i = 0 ; i < (int)params.number_of_lines ; i++ )
     {
         fputs( array_of_lines[i] , output_file );
     }
