@@ -37,6 +37,12 @@ int test_params(int const* number_of_params , char **argv , struct users_params 
         return -1;
     }
 
+    char is_digit = argv[1][0] ;
+    if( is_digit > '9' || is_digit < '0' )
+    {
+        fprintf( stderr , "Please, enter number of lines in correct form" );
+        return -1;
+    }
 
     params_to_write->number_of_lines = (int)strtol(argv[ 1 ] , NULL , 10 ) ;
     if( (int)params_to_write->number_of_lines < 0 )
@@ -62,7 +68,7 @@ int test_params(int const* number_of_params , char **argv , struct users_params 
 
     temp_for_params_length = (int)strlen(argv[5]);
     if((temp_for_params_length != 3 ) || (strncmp(argv[5] , "asc" , 3 ) != 0 &&
-                                            strncmp(argv[5] , "des" , 3 ) != 0))
+                                          strncmp(argv[5] , "des" , 3 ) != 0))
     {
         fprintf( stderr , "Please enter valid comparer" );
         return -1;
@@ -115,7 +121,7 @@ int parcing_params( char **argv ,  struct users_params *params_to_write )
             break;
         case 5:
             if( ( strncmp( argv[ 4 ] , "merge" , 5 ) != 0 ) && (strncmp( argv[4]  , "quick" , 5 ) != 0)
-            && ( strncmp( argv[ 4 ] , "radix" , 5 ) != 0) )
+                && ( strncmp( argv[ 4 ] , "radix" , 5 ) != 0) )
             {
                 fprintf( stderr , "Please, enter valid sorting type" );
                 return -1;
@@ -233,8 +239,8 @@ int main( int argc , char **argv )
     output_file = fopen( params.second_file , "wb" );
     if( output_file == NULL )
     {
-     fprintf( stderr , " Can not open %s " , params.second_file );
-     return -1;
+        fprintf( stderr , " Can not open %s " , params.second_file );
+        return -1;
     }
 
     for( int i = 0 ; i < (int)params.number_of_lines ; i++ )
