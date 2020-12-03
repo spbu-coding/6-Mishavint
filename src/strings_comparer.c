@@ -37,6 +37,12 @@ int test_params(int const* number_of_params , char **argv , struct users_params 
         return -1;
     }
 
+    char is_digit = argv[1][0] ;
+    if( is_digit > '9' || is_digit < '0' )
+    {
+        fprintf( stderr , "Please, enter number of lines in correct form" );
+        return -1;
+    }
 
     params_to_write->number_of_lines = (int)strtol(argv[ 1 ] , NULL , 10 ) ;
     if( (int)params_to_write->number_of_lines < 0 )
@@ -62,7 +68,7 @@ int test_params(int const* number_of_params , char **argv , struct users_params 
 
     temp_for_params_length = (int)strlen(argv[5]);
     if((temp_for_params_length != 3 ) || (strncmp(argv[5] , "asc" , 3 ) != 0 &&
-                                            strncmp(argv[5] , "des" , 3 ) != 0))
+                                          strncmp(argv[5] , "des" , 3 ) != 0))
     {
         fprintf( stderr , "Please enter valid comparer" );
         return -1;
@@ -115,7 +121,7 @@ int parcing_params( char **argv ,  struct users_params *params_to_write )
             break;
         case 5:
             if( ( strncmp( argv[ 4 ] , "merge" , 5 ) != 0 ) && (strncmp( argv[4]  , "quick" , 5 ) != 0)
-            && ( strncmp( argv[ 4 ] , "radix" , 5 ) != 0) )
+                && ( strncmp( argv[ 4 ] , "radix" , 5 ) != 0) )
             {
                 fprintf( stderr , "Please, enter valid sorting type" );
                 return -1;
@@ -176,18 +182,17 @@ int main( int argc , char **argv )
 
     strings_array_t array_of_lines ;
 
-    array_of_lines = (char**)malloc( sizeof( char ) * params.number_of_lines );
+    array_of_lines = (char**)malloc( sizeof( char *) * params.number_of_lines );
     if(array_of_lines == NULL )
     {
         error_for_malloc
         return -1;
     }
-    char *temp_for_first_line = (char*)malloc( sizeof(char) * MAX_INPUT_STRING_SIZE );  // Than line numbers more, 1st line is bugging. This is my fix
 
     for( array_size_t i = 0 ; i < params.number_of_lines  ; i++ )
     {
         array_of_lines[i] = (char*)malloc( sizeof( char ) * MAX_INPUT_STRING_SIZE );
-        if(*array_of_lines == NULL )
+        if(array_of_lines == NULL )
         {
             error_for_malloc
             free_array_of_lines( array_of_lines , &i );
@@ -198,16 +203,10 @@ int main( int argc , char **argv )
             fprintf( stderr , "You have entered more lines, than in file" );
             return -1;
         }
-        if( i == 0 && params.number_of_lines >= 5 )
-        {
-            temp_for_first_line = array_of_lines[0];
-        }
+
     }
 
-    if( params.number_of_lines >=5 )
-    {
-        array_of_lines[0] = temp_for_first_line;
-    }
+
 
     switch ( params.sorting_type )
     {
@@ -233,8 +232,8 @@ int main( int argc , char **argv )
     output_file = fopen( params.second_file , "wb" );
     if( output_file == NULL )
     {
-     fprintf( stderr , " Can not open %s " , params.second_file );
-     return -1;
+        fprintf( stderr , " Can not open %s " , params.second_file );
+        return -1;
     }
 
     for( int i = 0 ; i < (int)params.number_of_lines ; i++ )
@@ -250,6 +249,8 @@ int main( int argc , char **argv )
     {
         fputs( "\n" , output_file );
     }
+
+
 
     fclose( output_file );
     fclose( input_file );
