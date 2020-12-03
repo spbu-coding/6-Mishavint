@@ -182,18 +182,17 @@ int main( int argc , char **argv )
 
     strings_array_t array_of_lines ;
 
-    array_of_lines = (char**)malloc( sizeof( char ) * params.number_of_lines );
+    array_of_lines = (char**)malloc( sizeof( char *) * params.number_of_lines );
     if(array_of_lines == NULL )
     {
         error_for_malloc
         return -1;
     }
-    char *temp_for_first_line = (char*)malloc( sizeof(char) * MAX_INPUT_STRING_SIZE );  // Than line numbers more, 1st line is bugging. This is my fix
 
     for( array_size_t i = 0 ; i < params.number_of_lines  ; i++ )
     {
         array_of_lines[i] = (char*)malloc( sizeof( char ) * MAX_INPUT_STRING_SIZE );
-        if(*array_of_lines == NULL )
+        if(array_of_lines == NULL )
         {
             error_for_malloc
             free_array_of_lines( array_of_lines , &i );
@@ -204,16 +203,10 @@ int main( int argc , char **argv )
             fprintf( stderr , "You have entered more lines, than in file" );
             return -1;
         }
-        if( i == 0 && params.number_of_lines >= 5 )
-        {
-            temp_for_first_line = array_of_lines[0];
-        }
+
     }
 
-    if( params.number_of_lines >=5 )
-    {
-        array_of_lines[0] = temp_for_first_line;
-    }
+
 
     switch ( params.sorting_type )
     {
@@ -256,6 +249,8 @@ int main( int argc , char **argv )
     {
         fputs( "\n" , output_file );
     }
+
+
 
     fclose( output_file );
     fclose( input_file );
